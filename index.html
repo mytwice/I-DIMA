@@ -12,7 +12,7 @@
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-
+            overflow: hidden;
         }
 
         /* 인트로 스타일 */
@@ -71,12 +71,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            transition: background 0.3s ease;
-        }
-
-        .section:hover::before {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.7);  /* 검은 배경을 더욱 강조 */
+            z-index: 1;  /* 레이어를 이미지 위에 배치 */
         }
 
         .bg-image {
@@ -84,6 +80,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            z-index: 0;  /* 배경 이미지가 레이어 아래로 가도록 설정 */
         }
 
         .content {
@@ -93,8 +90,9 @@
             transform: translate(-50%, -50%);
             color: white;
             text-align: center;
-            z-index: 2;
+            z-index: 2;  /* 텍스트 콘텐츠가 위에 오도록 설정 */
             width: 100%;
+            padding: 20px;
         }
 
         .title {
@@ -243,42 +241,28 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-/* 모바일에서 인트로 화면과 콘텐츠 전환 최적화 */
-@media (max-width: 768px) {
-    .intro {
-        height: auto; /* 모바일에서 인트로의 높이를 자동으로 설정 */
-        min-height: 100vh; /* 최소 높이를 100vh로 설정하여 화면 꽉 채우기 */
-    }
-
-    .container {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(6, auto); /* 섹션 높이를 auto로 설정 */
-        gap: 1rem; /* 섹션 사이 간격을 줄여서 스크롤을 줄임 */
-        height: auto; /* 컨테이너 높이를 자동으로 설정하여 스크롤 최소화 */
-        overflow-y: auto; /* 모바일에서 세로 스크롤 가능하도록 설정 */
-    }
-
-    .description {
+        .description {
         opacity: 1;
         transform: none;
         font-size: clamp(1em, 4vw, 1.1em); /* 모바일에서 설명 텍스트 크기 최적화 */
     }
 
-    /* 버튼과 알림창의 크기와 위치 최적화 */
-    .contact-button {
-        padding: 12px 24px;
-        font-size: 1em;
-        bottom: 15px;
-        right: 15px;
-    }
 
-    .alert {
-        font-size: clamp(1em, 5vw, 1.2em);
-        width: 80%;
-        max-width: 280px;
-        padding: 15px 30px;
-    }
+/* 애니메이션 */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 }
     </style>
 </head>
@@ -311,7 +295,7 @@
             </div>
         </a>
         <div class="section" onclick="showAlert()">
-            <img src="" alt=" " class="bg-image">
+            <img src="/api/placeholder/800/600" alt=" " class="bg-image">
             <div class="content">
                 <h2 class="title">정책모음</h2>
                 <p class="description">도움되는 정책 모아보기</p>
@@ -341,7 +325,7 @@
     </div>
 
     <!-- 문의하기 버튼 -->
-    <a href="/https://open.kakao.com/o/sQ5O8Zfg" class="contact-button">문의하기</a>
+    <a href="https://open.kakao.com/o/sQ5O8Zfg" class="contact-button">문의하기</a>
 
     <script>
         let introTimer;
@@ -384,6 +368,5 @@
             }, 2000);
         }
     </script>
-    
 </body>
 </html>
