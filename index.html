@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I-DIMA 프로젝트</title>
     <style>
         * {
@@ -12,7 +13,13 @@
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+
+        html {
+            height: -webkit-fill-available;
         }
 
         /* 인트로 스타일 */
@@ -22,6 +29,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
+            height: 100dvh;
             background: #e465c6;
             display: flex;
             justify-content: center;
@@ -36,20 +44,21 @@
         }
 
         .intro-title {
-            font-size: 4em;
+            font-size: clamp(2.5em, 8vw, 4em);
             margin-bottom: 0.5em;
             animation: fadeInUp 1s ease;
         }
 
         .intro-desc {
-            font-size: 1.5em;
+            font-size: clamp(1em, 4vw, 1.5em);
             opacity: 0;
             animation: fadeInUp 1s ease 0.5s forwards;
         }
 
         /* 메인 컨테이너 스타일 */
         .container {
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(2, 1fr);
@@ -62,7 +71,9 @@
             overflow: hidden;
             cursor: pointer;
             transition: all 0.5s ease;
-            border: 3px solid #cd85c3; /* 각 섹션에 테두리 추가 */
+            border: 3px solid #cd85c3;
+            text-decoration: none;
+            min-height: 33.33vh;
         }
 
         .section::before {
@@ -72,8 +83,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);  /* 검은 배경을 더욱 강조 */
-            z-index: 1;  /* 레이어를 이미지 위에 배치 */
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
         }
 
         .bg-image {
@@ -81,7 +92,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 0;  /* 배경 이미지가 레이어 아래로 가도록 설정 */
+            z-index: 0;
         }
 
         .content {
@@ -91,20 +102,20 @@
             transform: translate(-50%, -50%);
             color: white;
             text-align: center;
-            z-index: 2;  /* 텍스트 콘텐츠가 위에 오도록 설정 */
+            z-index: 2;
             width: 100%;
             padding: 20px;
         }
 
         .title {
-            font-size: 2.5em;
+            font-size: clamp(1.5em, 5vw, 2.5em);
             font-weight: bold;
             margin-bottom: 0.5em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .description {
-            font-size: 1.2em;
+            font-size: clamp(0.9em, 3vw, 1.2em);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
@@ -118,7 +129,7 @@
         /* 문의하기 버튼 스타일 */
         .contact-button {
             position: fixed;
-            bottom: 30px;
+            bottom: max(30px, env(safe-area-inset-bottom));
             right: 30px;
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.9);
@@ -156,51 +167,48 @@
         }
 
         /* 모바일 레이아웃 */
-        @media (max-width: 425px) {
+        @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(6, 1fr);
-                height: 100svh; /* 모바일 브라우저 높이 대응 */
-                overflow-y: auto; /* 모바일에서 스크롤 가능하도록 */
+                grid-template-rows: repeat(6, minmax(300px, 1fr));
+                height: auto;
+                min-height: 100dvh;
             }
 
             .section {
-                height: 50svh; /* 각 섹션 전체 높이 */
-            }
-
-            .title {
-                font-size: clamp(1.8em, 6vw, 2.5em) !important;
+                min-height: 300px;
+                height: auto;
             }
 
             .description {
-                font-size: clamp(0.9em, 3vw, 1.2em) !important;
+                opacity: 1;
+                transform: translateY(0);
             }
 
             .contact-button {
-                padding: 12px 24px !important;
-                font-size: 1em !important;
-                bottom: 20px !important;
-                right: 20px !important;
+                padding: 12px 24px;
+                font-size: 1em;
+                bottom: max(20px, env(safe-area-inset-bottom));
+                right: 20px;
             }
         }
 
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    /* 애니메이션 */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    @keyframes pulse {
-        0% { opacity: 0.6; }
-        50% { opacity: 1; }
-        100% { opacity: 0.6; }
-    }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
     </style>
 </head>
 <body>
@@ -231,6 +239,13 @@
                 <p class="description">작품을 모아보는 예술 갤러리</p>
             </div>
         </a>
+        <a href="https://mytwice.github.io/DIMAMAP/" class="section">
+            <img src="map.png" alt=" " class="bg-image">
+            <div class="content">
+                <h2 class="title">DIMA MAP</h2>
+                <p class="description">캠퍼스 지도 서비스</p>
+            </div>
+        </a>
         <div class="section" onclick="showAlert()">
             <img src="/api/placeholder/800/600" alt=" " class="bg-image">
             <div class="content">
@@ -243,13 +258,6 @@
             <div class="content">
                 <h2 class="title">DIMA BOARD</h2>
                 <p class="description">한울마당 전광판</p>
-            </div>
-        </div>
-        <div class="section" onclick="showAlert()">
-            <img src="" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">DIMA MAP</h2>
-                <p class="description">캠퍼스 지도 서비스</p>
             </div>
         </div>
         <div class="section" onclick="showAlert()">
