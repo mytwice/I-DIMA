@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>I-DIMA 프로젝트</title>
+  <link rel="manifest" href="/manifest.json">
   <style>
     /* 기본 스타일 */
     * {
@@ -36,7 +37,7 @@
       z-index: 1001;
       font-size: 1em;
     }
-    #installBanner button {
+    #installBtn {
       background: rgba(255, 255, 255, 0.8);
       color: #e465c6;
       border: none;
@@ -46,7 +47,7 @@
       font-size: 1em;
       margin-left: 10px;
     }
-    #installBanner button:hover {
+    #installBtn:hover {
       background: rgba(255, 255, 255, 1);
     }
     #closeBanner {
@@ -232,11 +233,13 @@
   </style>
 </head>
 <body>
+    <link rel="manifest" href="manifest.json">
   <!-- 상단 설치 안내바 (초기에는 숨김) -->
-  <div id="installBanner" style="display: none;">
+  <div id="installBanner">
     <span>앱을 설치해보세요!</span>
     <div>
-      <button id="installButton">설치하기</button>
+      <button id="installBtn">설치하기</button>
+      <!-- HTML: 설치 버튼 -->
       <button id="closeBanner">닫기</button>
     </div>
   </div>
@@ -305,23 +308,29 @@
     let deferredPrompt;
     let introTimer;
 
-    // beforeinstallprompt 이벤트: 설치 안내바 표시
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('installBanner').style.display = 'flex';
-    });
+// JavaScript: 설치 버튼 로직
 
-    // 설치하기 버튼 클릭 시
-    document.getElementById('installButton').addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log(`사용자의 설치 응답: ${outcome}`);
-        deferredPrompt = null;
-        document.getElementById('installBanner').style.display = 'none';
-      }
-    });
+window.addEventListener('beforeinstallprompt', (e) => {
+  // 기본 동작을 막아서 나중에 사용자 정의로 프롬프트를 표시할 수 있게 함
+  e.preventDefault();
+  deferredPrompt = e;
+  // 설치 버튼 보이기
+  document.getElementById('installBtn').style.display = 'block';
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  // 버튼 클릭 시, 프롬프트 표시
+  document.getElementById('installBtn').style.display = 'none';
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    console.log('사용자가 설치를 수락했습니다.');
+  } else {
+    console.log('사용자가 설치를 거부했습니다.');
+  }
+  deferredPrompt = null;
+});
+
 
     // 닫기 버튼 클릭 시 안내바 숨김
     document.getElementById('closeBanner').addEventListener('click', () => {
