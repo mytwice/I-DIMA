@@ -158,12 +158,12 @@
       position: fixed;
       bottom: max(30px, env(safe-area-inset-bottom));
       right: 30px;
-      padding: 15px 30px;
+      padding: 11px 21px;
       background: rgba(255, 255, 255, 0.9);
       color: #000;
       border: none;
       border-radius: 25px;
-      font-size: 1.1em;
+      font-size: 1em;
       cursor: pointer;
       z-index: 100;
       transition: all 0.3s ease;
@@ -327,37 +327,42 @@
       return ('standalone' in window.navigator) && window.navigator.standalone;
     }
     
-    // Android/Chrome 등 지원 브라우저: beforeinstallprompt 이벤트 리스너
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); // 기본 프롬프트 표시 방지
-      deferredPrompt = e;
-      // 지원 브라우저의 경우 기본 안내 메시지
-      document.getElementById('installMessage').textContent = '홈화면에 앱을 설치해보세요!';
-      document.getElementById('installBanner').style.display = 'flex';
-    });
-
-    // 설치 버튼 클릭 이벤트 (각 환경에 따른 동작)
-    document.getElementById('installButton').addEventListener('click', async () => {
-      if (deferredPrompt) {
-        // 지원 브라우저: 설치 프롬프트 실행
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById('installBanner').style.display = 'none';
-      } else if (isIos()) {
-        // iOS: 설치 방법 안내
-        alert('Safari의 공유 버튼을 누른 후 "홈 화면에 추가"를 선택하세요.');
-      } else if (isAndroid()) {
-        // Android의 지원하지 않는 브라우저: 안내 메시지 출력
-        alert('이 브라우저는 홈 화면 설치를 지원하지 않습니다. 크롬이나 웨일 브라우저로 접속해주세요.');
-      }
-    });
-    
-    // 닫기 버튼 클릭 시 배너 숨기기
-    document.getElementById('closeBanner').addEventListener('click', () => {
+    // 앱이 이미 설치된 경우 배너 숨기기
+    if (isInStandaloneMode()) {
       document.getElementById('installBanner').style.display = 'none';
-    });
-
+    } else {
+      // Android/Chrome 등 지원 브라우저: beforeinstallprompt 이벤트 리스너
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); // 기본 프롬프트 표시 방지
+        deferredPrompt = e;
+        // 지원 브라우저의 경우 기본 안내 메시지
+        document.getElementById('installMessage').textContent = '홈화면에 앱을 설치해보세요!';
+        document.getElementById('installBanner').style.display = 'flex';
+      });
+    
+      // 설치 버튼 클릭 이벤트 (각 환경에 따른 동작)
+      document.getElementById('installButton').addEventListener('click', async () => {
+        if (deferredPrompt) {
+          // 지원 브라우저: 설치 프롬프트 실행
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          document.getElementById('installBanner').style.display = 'none';
+        } else if (isIos()) {
+          // iOS: 설치 방법 안내
+          alert('Safari의 공유 버튼을 누른 후 "홈 화면에 추가"를 선택하세요.');
+        } else if (isAndroid()) {
+          // Android의 지원하지 않는 브라우저: 안내 메시지 출력
+          alert('이 브라우저는 홈 화면 설치를 지원하지 않습니다. 크롬이나 웨일 브라우저로 접속해주세요.');
+        }
+      });
+    
+      // 닫기 버튼 클릭 시 배너 숨기기
+      document.getElementById('closeBanner').addEventListener('click', () => {
+        document.getElementById('installBanner').style.display = 'none';
+      });
+    }
+    
     // 인트로 관련 스크립트
     document.addEventListener('DOMContentLoaded', () => {
       const intro = document.querySelector('.intro');
