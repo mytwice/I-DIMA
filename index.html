@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>I-DIMA 프로젝트</title>
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <style>
     /* 기본 스타일 */
     * {
@@ -308,29 +308,26 @@
     let deferredPrompt;
     let introTimer;
 
-// JavaScript: 설치 버튼 로직
-
 window.addEventListener('beforeinstallprompt', (e) => {
-  // 기본 동작을 막아서 나중에 사용자 정의로 프롬프트를 표시할 수 있게 함
   e.preventDefault();
   deferredPrompt = e;
-  // 설치 버튼 보이기
   document.getElementById('installBtn').style.display = 'block';
 });
 
 document.getElementById('installBtn').addEventListener('click', async () => {
-  // 버튼 클릭 시, 프롬프트 표시
-  document.getElementById('installBtn').style.display = 'none';
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  if (outcome === 'accepted') {
-    console.log('사용자가 설치를 수락했습니다.');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('사용자가 설치를 수락했습니다.');
+    } else {
+      console.log('사용자가 설치를 거부했습니다.');
+    }
+    deferredPrompt = null;
   } else {
-    console.log('사용자가 설치를 거부했습니다.');
+    console.log('설치 프롬프트가 아직 준비되지 않았습니다.');
   }
-  deferredPrompt = null;
 });
-
 
     // 닫기 버튼 클릭 시 안내바 숨김
     document.getElementById('closeBanner').addEventListener('click', () => {
