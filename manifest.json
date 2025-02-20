@@ -1,10 +1,10 @@
 {
   "name": "I-DIMA",
   "short_name": "I-DIMA",
-  "theme_color": "#e465c6",
-  "background_color": "#cd85c3",
   "start_url": "https://mytwice.github.io/I-DIMA/",
   "display": "standalone",
+  "theme_color": "#e465c6",
+  "background_color": "#cd85c3",
   "icons": [
     {
       "src": "192.png",
