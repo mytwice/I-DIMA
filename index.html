@@ -324,21 +324,21 @@
     }
     
     function isInStandaloneMode() {
-      return ('standalone' in window.navigator) && window.navigator.standalone;
+      return (window.navigator.standalone === true) || 
+             (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
     }
     
-    // 앱이 이미 설치된 경우 배너 숨기기
-    if (isInStandaloneMode()) {
-      document.getElementById('installBanner').style.display = 'none';
-    } else {
-      // Android/Chrome 등 지원 브라우저: beforeinstallprompt 이벤트 리스너
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); // 기본 프롬프트 표시 방지
-        deferredPrompt = e;
-        // 지원 브라우저의 경우 기본 안내 메시지
-        document.getElementById('installMessage').textContent = '홈화면에 앱을 설치해보세요!';
-        document.getElementById('installBanner').style.display = 'flex';
-      });
+      // 앱이 이미 설치되어 standalone 모드일 경우 배너 숨기기
+      if (isInStandaloneMode()) {
+        document.getElementById('installBanner').style.display = 'none';
+      } else {
+        // beforeinstallprompt 이벤트 리스너 등록 (Android/Chrome 등 지원 브라우저)
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault(); // 기본 프롬프트 표시 방지
+          deferredPrompt = e;
+          document.getElementById('installMessage').textContent = '홈화면에 앱을 설치해보세요!';
+          document.getElementById('installBanner').style.display = 'flex';
+        });
     
       // 설치 버튼 클릭 이벤트 (각 환경에 따른 동작)
       document.getElementById('installButton').addEventListener('click', async () => {
