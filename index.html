@@ -1,317 +1,370 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I-DIMA 프로젝트</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-DIMA 프로젝트</title>
+  <style>
+    /* 기본 스타일 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
+    html {
+      height: -webkit-fill-available;
+    }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-        }
+    /* 상단 설치 안내바 스타일 */
+    #installBanner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #e465c6;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1001;
+      font-size: 1em;
+    }
+    #installBanner button {
+      background: rgba(255, 255, 255, 0.8);
+      color: #e465c6;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-left: 10px;
+    }
+    #installBanner button:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+    #closeBanner {
+      background: transparent;
+      color: white;
+      border: none;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-left: 10px;
+    }
 
-        html {
-            height: -webkit-fill-available;
-        }
+    /* 인트로 스타일 */
+    .intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      background: #e465c6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease;
+    }
+    .intro-content {
+      text-align: center;
+      color: white;
+    }
+    .intro-title {
+      font-size: clamp(2.5em, 8vw, 4em);
+      margin-bottom: 0.5em;
+      animation: fadeInUp 1s ease;
+    }
+    .intro-desc {
+      font-size: clamp(1em, 4vw, 1.5em);
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.5s forwards;
+    }
 
-        /* 인트로 스타일 */
-        .intro {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            height: 100dvh;
-            background: #e465c6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s ease;
-        }
+    /* 메인 컨테이너 스타일 */
+    .container {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .section {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.5s ease;
+      border: 3px solid #cd85c3;
+      text-decoration: none;
+      min-height: 33.33vh;
+    }
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+    .bg-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      z-index: 2;
+      width: 100%;
+      padding: 20px;
+    }
+    .title {
+      font-size: clamp(1.5em, 5vw, 2.5em);
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .description {
+      font-size: clamp(0.9em, 3vw, 1.2em);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+    .section:hover .description {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        .intro-content {
-            text-align: center;
-            color: white;
-        }
+    /* 문의하기 버튼 스타일 */
+    .contact-button {
+      position: fixed;
+      bottom: max(30px, env(safe-area-inset-bottom));
+      right: 30px;
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1em;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .contact-button:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
 
-        .intro-title {
-            font-size: clamp(2.5em, 8vw, 4em);
-            margin-bottom: 0.5em;
-            animation: fadeInUp 1s ease;
-        }
+    /* 알림창 스타일 */
+    .alert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 20px 40px;
+      border-radius: 10px;
+      font-size: 1.2em;
+      z-index: 1001;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
 
-        .intro-desc {
-            font-size: clamp(1em, 4vw, 1.5em);
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.5s forwards;
-        }
+    /* 모바일 레이아웃 */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(6, minmax(300px, 1fr));
+        height: auto;
+        min-height: 100dvh;
+      }
+      .section {
+        min-height: 300px;
+        height: auto;
+      }
+      .description {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .contact-button {
+        padding: 12px 24px;
+        font-size: 1em;
+        bottom: max(20px, env(safe-area-inset-bottom));
+        right: 20px;
+      }
+    }
 
-        /* 메인 컨테이너 스타일 */
-        .container {
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .section {
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.5s ease;
-            border: 3px solid #cd85c3;
-            text-decoration: none;
-            min-height: 33.33vh;
-        }
-
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
-        }
-
-        .bg-image {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-
-        .content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            text-align: center;
-            z-index: 2;
-            width: 100%;
-            padding: 20px;
-        }
-
-        .title {
-            font-size: clamp(1.5em, 5vw, 2.5em);
-            font-weight: bold;
-            margin-bottom: 0.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .description {
-            font-size: clamp(0.9em, 3vw, 1.2em);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-        }
-
-        .section:hover .description {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 문의하기 버튼 스타일 */
-        .contact-button {
-            position: fixed;
-            bottom: max(30px, env(safe-area-inset-bottom));
-            right: 30px;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #000;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1em;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .contact-button:hover {
-            background: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        /* 알림창 스타일 */
-        .alert {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 10px;
-            font-size: 1.2em;
-            z-index: 1001;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* 모바일 레이아웃 */
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(6, minmax(300px, 1fr));
-                height: auto;
-                min-height: 100dvh;
-            }
-
-            .section {
-                min-height: 300px;
-                height: auto;
-            }
-
-            .description {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .contact-button {
-                padding: 12px 24px;
-                font-size: 1em;
-                bottom: max(20px, env(safe-area-inset-bottom));
-                right: 20px;
-            }
-        }
-
-        /* 애니메이션 */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-    </style>
+    /* 애니메이션 */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+  </style>
 </head>
 <body>
-    <!-- 인트로 섹션 -->
-    <div class="intro" onclick="skipIntro()">
-        <div class="intro-content">
-            <h1 class="intro-title">I-DIMA</h1>
-            <p class="intro-desc">학교 개선 프로젝트</p>
-        </div>
+  <!-- 상단 설치 안내바 (초기에는 숨김) -->
+  <div id="installBanner" style="display: none;">
+    <span>앱을 설치해보세요!</span>
+    <div>
+      <button id="installButton">설치하기</button>
+      <button id="closeBanner">닫기</button>
     </div>
+  </div>
 
-    <!-- 알림창 -->
-    <div class="alert">서비스 준비중입니다.</div>
-
-    <!-- 메인 컨테이너 -->
-    <div class="container">
-        <a href="https://mytwice.github.io/DIMABUS/" class="section">
-            <img src="bus.png" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">DIMA 셔틀버스 시간표(비공식)</h2>
-                <p class="description">캠퍼스 셔틀 운행 정보</p>
-            </div>
-        </a>
-        <a href="https://mytwice.github.io/DIMAART/" class="section">
-            <img src="art.png" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">DIMA ART</h2>
-                <p class="description">작품을 모아보는 예술 갤러리</p>
-            </div>
-        </a>
-        <a href="https://mytwice.github.io/DIMAMAP/" class="section">
-            <img src="map.png" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">DIMA MAP</h2>
-                <p class="description">캠퍼스 지도 서비스</p>
-            </div>
-        </a>
-        <div class="section" onclick="showAlert()">
-            <img src="/api/placeholder/800/600" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">정책모음</h2>
-                <p class="description">도움되는 정책 모아보기</p>
-            </div>
-        </div>
-        <div class="section" onclick="showAlert()">
-            <img src="" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">DIMA BOARD</h2>
-                <p class="description">한울마당 전광판</p>
-            </div>
-        </div>
-        <div class="section" onclick="showAlert()">
-            <img src="" alt=" " class="bg-image">
-            <div class="content">
-                <h2 class="title">DIMA EDU</h2>
-                <p class="description">교육 서비스 플랫폼</p>
-            </div>
-        </div>
+  <!-- 인트로 섹션 -->
+  <div class="intro" onclick="skipIntro()">
+    <div class="intro-content">
+      <h1 class="intro-title">I-DIMA</h1>
+      <p class="intro-desc">학교 개선 프로젝트</p>
     </div>
+  </div>
 
-    <!-- 문의하기 버튼 -->
-    <a href="https://open.kakao.com/o/sQ5O8Zfg" class="contact-button">문의하기</a>
+  <!-- 알림창 -->
+  <div class="alert">서비스 준비중입니다.</div>
 
-    <script>
-        let introTimer;
+  <!-- 메인 컨테이너 -->
+  <div class="container">
+    <a href="https://mytwice.github.io/DIMABUS/" class="section">
+      <img src="bus.png" alt=" " class="bg-image">
+      <div class="content">
+        <h2 class="title">DIMA 셔틀버스 시간표(비공식)</h2>
+        <p class="description">캠퍼스 셔틀 운행 정보</p>
+      </div>
+    </a>
+    <a href="https://mytwice.github.io/DIMAART/" class="section">
+      <img src="art.png" alt=" " class="bg-image">
+      <div class="content">
+        <h2 class="title">DIMA ART</h2>
+        <p class="description">작품을 모아보는 예술 갤러리</p>
+      </div>
+    </a>
+    <a href="https://mytwice.github.io/DIMAMAP/" class="section">
+      <img src="map.png" alt=" " class="bg-image">
+      <div class="content">
+        <h2 class="title">DIMA MAP</h2>
+        <p class="description">캠퍼스 지도 서비스</p>
+      </div>
+    </a>
+    <div class="section" onclick="showAlert()">
+      <img src="/api/placeholder/800/600" alt=" " class="bg-image">
+      <div class="content">
+        <h2 class="title">정책모음</h2>
+        <p class="description">도움되는 정책 모아보기</p>
+      </div>
+    </div>
+    <div class="section" onclick="showAlert()">
+      <img src="" alt=" " class="bg-image">
+      <div class="content">
+        <h2 class="title">DIMA BOARD</h2>
+        <p class="description">한울마당 전광판</p>
+      </div>
+    </div>
+    <div class="section" onclick="showAlert()">
+      <img src="" alt=" " class="bg-image">
+      <div class="content">
+        <h2 class="title">DIMA EDU</h2>
+        <p class="description">교육 서비스 플랫폼</p>
+      </div>
+    </div>
+  </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const intro = document.querySelector('.intro');
-            const container = document.querySelector('.container');
+  <!-- 문의하기 버튼 -->
+  <a href="https://open.kakao.com/o/sQ5O8Zfg" class="contact-button">문의하기</a>
 
-            // 5초 타이머 설정
-            introTimer = setTimeout(() => {
-                switchToMain();
-            }, 5000);
-        });
+  <script>
+    let deferredPrompt;
+    let introTimer;
 
-        // 인트로 건너뛰기 함수
-        function skipIntro() {
-            // 기존 타이머 취소
-            clearTimeout(introTimer);
-            switchToMain();
-        }
+    // beforeinstallprompt 이벤트: 설치 안내바 표시
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').style.display = 'flex';
+    });
 
-        // 메인으로 전환하는 함수
-        function switchToMain() {
-            const intro = document.querySelector('.intro');
-            const container = document.querySelector('.container');
+    // 설치하기 버튼 클릭 시
+    document.getElementById('installButton').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`사용자의 설치 응답: ${outcome}`);
+        deferredPrompt = null;
+        document.getElementById('installBanner').style.display = 'none';
+      }
+    });
 
-            intro.style.opacity = '0';
-            container.style.opacity = '1';
-            
-            setTimeout(() => {
-                intro.style.display = 'none';
-            }, 500);
-        }
+    // 닫기 버튼 클릭 시 안내바 숨김
+    document.getElementById('closeBanner').addEventListener('click', () => {
+      document.getElementById('installBanner').style.display = 'none';
+    });
 
-        function showAlert() {
-            const alert = document.querySelector('.alert');
-            alert.style.display = 'block';
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 2000);
-        }
-    </script>
+    // 인트로 관련 스크립트
+    document.addEventListener('DOMContentLoaded', () => {
+      const intro = document.querySelector('.intro');
+      const container = document.querySelector('.container');
+
+      // 5초 후 메인 화면 전환
+      introTimer = setTimeout(() => {
+        switchToMain();
+      }, 5000);
+    });
+
+    // 인트로 건너뛰기 함수
+    function skipIntro() {
+      clearTimeout(introTimer);
+      switchToMain();
+    }
+
+    // 메인으로 전환하는 함수
+    function switchToMain() {
+      const intro = document.querySelector('.intro');
+      const container = document.querySelector('.container');
+
+      intro.style.opacity = '0';
+      container.style.opacity = '1';
+      
+      setTimeout(() => {
+        intro.style.display = 'none';
+      }, 500);
+    }
+
+    function showAlert() {
+      const alert = document.querySelector('.alert');
+      alert.style.display = 'block';
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 2000);
+    }
+  </script>
 </body>
 </html>
