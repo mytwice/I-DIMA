@@ -242,7 +242,7 @@
   </div>
 
   <!-- 상단 설치 안내바 (초기에는 숨김) -->
-  <div id="installBanner">
+  <div id="installBanner" style="display: none;">
     <span>홈화면에 앱을 설치해보세요!</span>
     <div>
       <button id="installButton">설치하기</button>
@@ -319,18 +319,47 @@
       document.getElementById('installBanner').style.display = 'flex';
     });
 
-    // 설치하기 버튼 클릭 시
+    // iOS 기기 감지 함수
+    function isIos() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    }
+    
+    // 홈 화면에 추가되었는지 확인하는 함수
+    function isInStandaloneMode() {
+      return ('standalone' in window.navigator) && window.navigator.standalone;
+    }
+    
+    // Android/Chrome: beforeinstallprompt 이벤트 리스너
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); // 기본 프롬프트 표시를 막음
+      deferredPrompt = e;
+      document.getElementById('installBanner').style.display = 'block';
+    });
+    
+    // 페이지 로드 시 iOS 기기이고 아직 홈 화면에 추가되지 않은 경우 배너 표시
+    window.addEventListener('load', () => {
+      if (isIos() && !isInStandaloneMode()) {
+        document.getElementById('installBanner').style.display = 'block';
+      }
+    });
+    
+    // 설치 버튼 클릭 이벤트 (Android와 iOS 통합)
     document.getElementById('installButton').addEventListener('click', async () => {
       if (deferredPrompt) {
+        // Android 등 자동 설치 프롬프트가 지원되는 경우
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         console.log(`사용자의 설치 응답: ${outcome}`);
         deferredPrompt = null;
         document.getElementById('installBanner').style.display = 'none';
+      } else if (isIos()) {
+        // iOS의 경우 자동 프롬프트가 없으므로 안내 메시지 표시
+        alert('Safari의 공유 버튼을 누른 후 "홈 화면에 추가"를 선택하세요.');
       }
     });
-
-    // 닫기 버튼 클릭 시 안내바 숨김
+    
+    // 닫기 버튼 클릭 시 배너 숨기기
     document.getElementById('closeBanner').addEventListener('click', () => {
       document.getElementById('installBanner').style.display = 'none';
     });
