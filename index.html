@@ -324,12 +324,34 @@
             border-radius: var(--border-radius);
         }
 
+        /* Install Banner */
         #closeBanner {
             background: none;
             border: none;
             color: var(--gray);
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1rem; /* Reduced from 1.2rem */
+            padding: 8px;    /* Added padding */
+            margin-left: 4px; /* Added margin for spacing */
+        }
+
+        #installBanner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px; /* Increased right padding slightly */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        #installMessage {
+            flex: 1;
+            padding-right: 20px; /* Increased padding */
         }
 
         /* Media query changed for nav-item styling on mobile */
@@ -440,7 +462,7 @@
                 <a href="https://mytwice.github.io/DIMABUS/" class="nav-item">
                     <div class="nav-icon">🚌</div>
                     <div class="nav-content">
-                        <h3 class="nav-title">DIMA 셔틀버스</h3>
+                        <h3 class="nav-title">DIMA BUS</h3>
                         <p class="nav-description">캠퍼스 셔틀 운행 정보</p>
                     </div>
                 </a>
