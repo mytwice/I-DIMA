@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-DIMA</title>
+    <style>
+        :root {
+            --primary: #e775cb;
+            --primary-dark: #d33b8d;
+            --secondary: #8470db;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .instagram-link {
+            color: var(--secondary);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            background-color: #f3f4f6;
+            transition: var(--transition);
+        }
+
+        .instagram-link:hover {
+            background-color: #e2e4e9;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: 24px 16px;
+            border-radius: var(--border-radius);
+            padding: 4px;
+            box-shadow: var(--shadow);
+        }
+
+        .main-nav {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Changed from 1fr to 2fr for mobile */
+            gap: 8px;
+        }
+
+        .nav-item {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: calc(var(--border-radius) - 4px);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background-color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 2rem;
+            margin-right: 16px;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        .nav-content {
+            flex: 1;
+        }
+
+        .nav-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .nav-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin: 0;
+        }
+
+        /* Notice Bar */
+        .notice-bar {
+            background: var(--white);
+            margin: 16px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .notice-header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 14px 20px;
+            color: var(--white);
+        }
+
+        .notice-icon {
+            font-size: 1.2rem;
+            margin-right: 12px;
+        }
+
+        .notice-text {
+            font-size: 1rem;
+            padding: 12px 20px;
+            word-break: keep-all;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 24px 16px;
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: var(--white);
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            height: 80px;
+        }
+
+        .action-button .emoji {
+            margin-right: 12px;
+            font-size: 1.5rem;
+        }
+
+        .action-button .button-text {
+            flex: 1;
+        }
+
+        .action-button strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-top: 4px;
+        }
+
+        .action-button:hover, .action-button:focus {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: var(--white);
+            margin: 24px 16px;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: left;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-box p:first-child {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .info-box h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .info-box .detail-link {
+            display: inline-block;
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .info-box .detail-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--secondary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .info-box .detail-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--white);
+            padding: 24px 16px;
+            margin-top: 32px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .footer-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Install Banner */
+        #installBanner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        #installMessage {
+            flex: 1;
+            padding-right: 16px;
+        }
+
+        #installButton {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+        }
+
+        #closeBanner {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Media query changed for nav-item styling on mobile */
+        @media (max-width: 767px) {
+            .nav-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 12px 8px;
+                justify-content: center;
+            }
+            
+            .nav-icon {
+                margin-right: 0;
+                margin-bottom: 8px;
+                font-size: 1.8rem;
+            }
+            
+            .nav-title {
+                font-size: 0.9rem;
+                margin-bottom: 2px;
+            }
+            
+            .nav-description {
+                font-size: 0.8rem;
+                line-height: 1.2;
+            }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .main-nav {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .nav-item {
+                height: 100%;
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 10px;
+            }
+            
+            .nav-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                display: grid;
+                grid-template-columns: 300px 1fr;
+                gap: 24px;
+                padding: 24px;
+            }
+            
+            .header {
+                grid-column: 1 / -1;
+                margin-bottom: 0;
+            }
+            
+            .nav-container {
+                grid-column: 1;
+                margin: 0;
+            }
+            
+            .main-nav {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                grid-column: 2;
+            }
+            
+            .footer {
+                grid-column: 1 / -1;
+                margin-top: 0;
+            }
+            
+            .nav-item {
+                flex-direction: row;
+                text-align: left;
+                padding: 16px;
+                height: auto;
+            }
+            
+            .nav-icon {
+                margin-bottom: 0;
+                margin-right: 12px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">I-DIMA</div>
+        <a href="https://www.instagram.com/i_dima_25" class="instagram-link" target="_blank">인스타그램</a>
+    </header>
+
+    <div class="container">
+        <div class="nav-container">
+            <nav class="main-nav">
+                <a href="https://mytwice.github.io/DIMABUS/" class="nav-item">
+                    <div class="nav-icon">🚌</div>
+                    <div class="nav-content">
+                        <h3 class="nav-title">DIMA 셔틀버스</h3>
+                        <p class="nav-description">캠퍼스 셔틀 운행 정보</p>
+                    </div>
+                </a>
+                <a href="https://mytwice.github.io/DIMAART/" class="nav-item">
+                    <div class="nav-icon">🎨</div>
+                    <div class="nav-content">
+                        <h3 class="nav-title">DIMA ART</h3>
+                        <p class="nav-description">작품을 모아보는 예술 갤러리</p>
+                    </div>
+                </a>
+                <a href="https://mytwice.github.io/DIMAMAP/" class="nav-item">
+                    <div class="nav-icon">🗺️</div>
+                    <div class="nav-content">
+                        <h3 class="nav-title">DIMA MAP</h3>
+                        <p class="nav-description">캠퍼스 지도 서비스</p>
+                    </div>
+                </a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <div class="notice-bar">
+                <div class="notice-header">
+                    <span class="emoji notice-icon">📢</span>
+                    <div>공지사항</div>
+                </div>
+                <div class="notice-text">1. 서비스 초기로 잘못된 정보나 오류가 있을 수 있습니다<br>2. MAP은 3월 1주차 데이터 업데이트 예정입니다</div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-button" id="installApp">
+                    <span class="emoji">➕</span>
+                    <div class="button-text">
+                        홈화면에서 바로 접속하고 싶다면
+                        <strong>앱 추가하기</strong>
+                    </div>
+                </button>
+
+                <button class="action-button" id="surveyButton">
+                    <span class="emoji">📋</span>
+                    <div class="button-text">
+                        더 편리한 I-DIMA를 위해
+                        <strong>사용자 설문조사 참여하기</strong>
+                    </div>
+                </button>
+            </div>
+
+            <div class="info-box" id="detailBox">
+                <p>학생들의 편리한 학교생활을 위한</p>
+                <h2>I-DIMA</h2>
+                <a href="https://mytwice.github.io/I-DIMA/info" class="detail-link">자세히 보기</a>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="copyright">© 2025 I-DIMA. All rights reserved.</div>
+                <div class="footer-links">
+                    <a href="https://mytwice.github.io/I-DIMA/service" class="footer-link">이용약관</a>
+                    <a href="https://mytwice.github.io/I-DIMA/privacy" class="footer-link">개인정보 처리방침</a>
+                    <a href="https://open.kakao.com/o/sQ5O8Zfg" class="footer-link">문의하기</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Install Banner -->
+    <div id="installBanner">
+        <div id="installMessage">홈화면에 앱을 설치해보세요!</div>
+        <button id="installButton">설치하기</button>
+        <button id="closeBanner">
+            <span class="emoji">❌</span>
+        </button>
+    </div>
+
+    <script>
+        // 설문조사 버튼 기능
+        document.getElementById('surveyButton').addEventListener('click', function() {
+            window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSfaXphC10sEl_NcWqar9Bbdu0iLt07_DyXbL8IjRH0MTVA6OA/viewform?usp=dialog';
+        });
+
+        // 앱 설치 버튼 기능
+        document.getElementById('installApp').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('installBanner').style.display = 'none';
+            } else if (isIos()) {
+                alert('Safari의 공유 버튼을 누른 후 "홈 화면에 추가"를 선택하세요.');
+            } else if (isAndroid()) {
+                alert('이 브라우저는 홈 화면 설치를 지원하지 않습니다. 크롬이나 웨일 브라우저로 접속해주세요.');
+            }
+        });
+
+        // 자세히 보기 전체 영역 클릭 기능
+        document.getElementById('detailBox').addEventListener('click', function() {
+            window.location.href = document.querySelector('.detail-link').getAttribute('href');
+        });
+
+        // 앱 설치 기능
+        let deferredPrompt;
+        
+        // 환경 감지 함수들
+        function isIos() {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        }
+        
+        function isAndroid() {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /android/.test(userAgent);
+        }
+        
+        function isInStandaloneMode() {
+            return (window.navigator.standalone === true) || 
+                (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+        }
+        
+        // 앱이 이미 설치되어 standalone 모드일 경우 배너 숨기기
+        if (isInStandaloneMode()) {
+            document.getElementById('installBanner').style.display = 'none';
+        } else {
+            // beforeinstallprompt 이벤트 리스너 등록 (Android/Chrome 등 지원 브라우저)
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault(); // 기본 프롬프트 표시 방지
+                deferredPrompt = e;
+                document.getElementById('installMessage').textContent = '홈화면에 앱을 설치해보세요!';
+                document.getElementById('installBanner').style.display = 'flex';
+            });
+
+            // 닫기 버튼 클릭 시 배너 숨기기
+            document.getElementById('closeBanner').addEventListener('click', () => {
+                document.getElementById('installBanner').style.display = 'none';
+            });
+        }
+
+        // 설치 버튼에 대한 이벤트 리스너
+        document.getElementById('installButton').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('installBanner').style.display = 'none';
+            } else if (isIos()) {
+                alert('Safari의 공유 버튼을 누른 후 "홈 화면에 추가"를 선택하세요.');
+            } else if (isAndroid()) {
+                alert('이 브라우저는 홈 화면 설치를 지원하지 않습니다. 크롬이나 웨일 브라우저로 접속해주세요.');
+            }
+        });
+    </script>
+</body>
+</html>
