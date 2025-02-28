@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-DIMA</title>
+    <style>
+        :root {
+            word-break: keep-all;
+            --primary: #e775cb;
+            --primary-dark: #d33b8d;
+            --secondary: #8470db;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .back-link {
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            background-color: #e2e4e9;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Content Sections */
+        .section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            margin: 24px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            margin-right: 12px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 30px 0;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            background-color: #f8f9fa;
+            padding: 16px;
+            border-radius: var(--border-radius);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 16px;
+        }
+
+        .service-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .team-section {
+            margin-top: 40px;
+        }
+
+        .team-roles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .role-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .role-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .role-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            margin-top: 16px;
+            transition: var(--transition);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--white);
+            padding: 24px 16px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .footer-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 24px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="https://mytwice.github.io/I-DIMA/" style="text-decoration: none; color: var(--primary);">I-DIMA</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h1>I-DIMA 프로젝트</h1>
+            <p>학생들의 편리한 학교생활을 위한 디지털 서비스 플랫폼</p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">🎯</span>프로젝트 목적</h2>
+            <p>I-DIMA는 디마 학생들의 캠퍼스 생활을 더욱 편리하게 만들기 위해 기획되었습니다. 학기 초 학생들이 자주 필요로 하는 정보와 서비스를 한 곳에서 쉽게 모아볼 수 있도록 하여 행복한 캠퍼스 생활에 도움이 되는 것이 주요 목적입니다.</p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">⏱️</span>개발 타임라인</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2024년 3월</div>
+                    <div class="timeline-content">
+                        <h3>DIMA 셔틀버스 시간표(비공식) 출시</h3>
+                        <p>학교 셔틀버스의 남은 시간을 알려주는 페이지를 공개했습니다.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024년 8월</div>
+                    <div class="timeline-content">
+                        <h3>셔틀버스 노선도, 공지사항 개발</h3>
+                        <p>사이트에 신규기능을 추가했습니다.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024년 10월</div>
+                    <div class="timeline-content">
+                        <h3>DIMA ART, MAP 개발 시작</h3>
+                        <p>신규 프로그램 개발을 진행했습니다.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2025년 2월</div>
+                    <div class="timeline-content">
+                        <h3>DIMA BUS 명칭 변경, 인스타그램 개설</h3>
+                        <p>I-DIMA로의 확장을 앞두고, 사이트명을 통합했습니다.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2025년 3월</div>
+                    <div class="timeline-content">
+                        <h3>I-DIMA 정식 출시</h3>
+                        <p>새학기를 맞이하여 작품을 기록하는 ART와 캠퍼스 지도 MAP 출시와 함께 메인 페이지를 리뉴얼했습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">🛠️</span>주요 서비스</h2>
+            <p>I-DIMA는 학생들의 캠퍼스 생활 편의를 위해 다양한 서비스를 제공합니다</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🚌</div>
+                    <h3 class="service-title">DIMA BUS</h3>
+                    <p>공식홈페이지 기반의 시간표를 기준으로 셔틀버스의 남은 시간을 제공합니다. 학교에 처음 방문하는 외부인에게 탑승 안내할 때도 활용할 수 있습니다.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎨</div>
+                    <h3 class="service-title">DIMA ART</h3>
+                    <p>공연이 많은 학교의 특성을 살려 캠퍼스 내에서 진행되는 학생들의 창작 작품을 기록하는 디지털 갤러리입니다.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🗺️</div>
+                    <h3 class="service-title">DIMA MAP</h3>
+                    <p>캠퍼스 지도 서비스로, 건물 위치, 강의실, 편의시설 등의 정보를 쉽게 찾을 수 있습니다. 신입생들의 캠퍼스 적응을 돕습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">👥</span>개발팀 소개</h2>
+            <p>I-DIMA는 학생들의 자발적인 참여로 개발되고 있는 프로젝트입니다. 다양한 전공과 관심사를 가진 학생들이 협업을 기다립니다.</p>
+            
+            <div class="team-roles">
+                <div class="role-card">
+                    <div class="role-icon">💻</div>
+                    <h3 class="role-title">개발</h3>
+                    <p>웹 및 앱 개발, 데이터베이스 관리, 서버 운영</p>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">🎨</div>
+                    <h3 class="role-title">디자인</h3>
+                    <p>UI/UX 디자인, 그래픽 디자인, 브랜딩</p>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">📊</div>
+                    <h3 class="role-title">마케팅</h3>
+                    <p>SNS 운영, 사용자 피드백</p>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">📝</div>
+                    <h3 class="role-title">기획</h3>
+                    <p>서비스 기획, 콘텐츠 기획, 사용자 조사</p>
+                </div>
+            </div>
+
+            <div class="team-section">
+                <h3>팀 구성</h3>
+                <p>준비 중</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <h2>함께 I-DIMA를 만들어갈 학생을 모집합니다</h2>
+            <p>개발, 디자인, 마케팅 등 다양한 분야에서 함께할 학생들을 모집하고 있습니다.</p>
+            <p>아이디어와 역량을 발휘하고 경험을 쌓고 싶은 분들의 많은 참여 바랍니다!</p>
+            <a href="https://open.kakao.com/o/sQ5O8Zfg" class="contact-btn">참여 문의하기</a>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">🔮</span>향후 계획</h2>
+            <p>I-DIMA는 지속적인 발전과 확장을 목표로 하고 있습니다. 앞으로의 주요 계획은 다음과 같습니다</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>준비중</li>
+            </ul>
+        </section>
+
+        <div style="text-align: center; margin: 50px 0 30px 0;">
+            <a href="https://mytwice.github.io/I-DIMA/" class="back-link" style="display: inline-block; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); font-size: 1.1rem; padding: 12px 28px; box-shadow: var(--shadow);">메인으로 돌아가기</a>
+        </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">© 2025 I-DIMA. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="https://mytwice.github.io/I-DIMA/service" class="footer-link">이용약관</a>
+                <a href="https://mytwice.github.io/I-DIMA/service#privacy" class="footer-link">개인정보 처리방침</a>
+                <a href="https://open.kakao.com/o/sQ5O8Zfg" class="footer-link">문의하기</a>
+                <a href="https://www.instagram.com/i_dima_25" class="footer-link">Instagram</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
